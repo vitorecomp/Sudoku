@@ -20,11 +20,12 @@ possui(X, [_|Y]):-
 		possui(X, Y).
 
 %sudoKu
-sudoKu(X, P) :-
-	prencheN(X, P),
+sudoKu(X, P, T) :-
+	prencheN(X, P, N),
 	verificaLinhas(P),
 	verificaBlocos(P),
-	verificaColunas(P).
+	verificaColunas(P),
+	N = [1,2,3,4,5,6,7,8,9].
 
 %Funçoes Verificadoras
 %Essas sao as funçoes responsaveis
@@ -33,17 +34,16 @@ verificaColunas([]).
 verificaColunas([X|Y]) :-
 	verificaColunas(Y),
 	nPossuiRepetidos(X).
-
-
+verificaBlocos(P)
 
 %Prenchendo N Listas
 %Essa Funçao apenas Prenche N listas sem qualquer
 %validaçao ou seja ela apenas remove os zeros das
 %listas passadas
-prencheN([], []).
-prencheN([X|Y], P) :-
-	prencheN(Y, Z), 
-	prenche(X, K),
+prencheN([], [], _).
+prencheN([X|Y], P, N) :-
+	prencheN(Y, Z, N), 
+	prenche(X, K, N),
 	nPossuiRepetidos(K),
 	P = [K|Z].
 
@@ -51,10 +51,10 @@ prencheN([X|Y], P) :-
 %Essa Funçao recebe uma lista com uma certa
 %guantidade de 0 e retorna todas as possibilidades
 %de sustituiçao de zeros desta
-prenche([], []).
-prenche([X|Y], R) :- R = [K | P],
-		prenche(Y, P),
-		((X = 0 , possui(K, [1,2,3,4,5,6,7,8,9]));
+prenche([], [], _).
+prenche([X|Y], R, T) :- R = [K | P],
+		prenche(Y, P, T) ,
+		((X = 0 , possui(K, T));
 		( X \= 0 , K = X)).
 
 
