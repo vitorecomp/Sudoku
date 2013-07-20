@@ -1,3 +1,4 @@
+:- use_module([sudoKuV6]).
 tSudoKu(K, K1):- 
 	matriz(K, X),
     matriz(K1, P),  
@@ -5,16 +6,10 @@ tSudoKu(K, K1):-
 	P = Y,
 	write(Y).
 
-tTrans(K):- 
-	matriz(K, X),
-	transforma(3, X, 0,Y),
-	write(Y).
-
 tSudoKu(K):- 
 	matriz(K, X),
 	sudoKu(X, Y),
 	write(Y).
-
 tAll(K, C):-
 	matriz(K, X),
 	aggregate_all(count, sudoKu(X, Y), C),
@@ -22,6 +17,7 @@ tAll(K, C):-
 
 pTestPre(K):-
 	matriz(K, X).
+	
 
 pTestPre(K, C):-
 	matriz(K, X),

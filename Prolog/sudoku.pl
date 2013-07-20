@@ -130,6 +130,7 @@ prencheN(NM, I, N, [X|Y],T, R) :-
 	removeL1deL2(X, N, LnPrechidos),
 	prenche(TR, X, LnPrechidos, K),
 	addOnList(RI, K, I, R),
+	%verificaBlocos(9, R),
 	transpose(R, T).
 
 removeL1deL2(_, [], []).
@@ -157,3 +158,6 @@ nPossuiRepetidos([]).
 nPossuiRepetidos([X|Y]):- 
 		\+member(X, Y), 
 		nPossuiRepetidos(Y).
+
+%nPossuiRepetidos([0|Y]):-
+%		nPossuiRepetidos(Y).
