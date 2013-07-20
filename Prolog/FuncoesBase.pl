@@ -1,138 +1,106 @@
-:- use_module([sudoKuV6]).
-tSudoKu(K, K1):- 
-	matriz(K, X),
-    matriz(K1, P),  
-	time(sudoKu(X, Y)),
-	P = Y,
-	write(Y).
+:- use_module(library(lists)).
 
-tSudoKu(K):- 
-	matriz(K, X),
-	sudoKu(X, Y),
-	write(Y).
-tAll(K, C):-
-	matriz(K, X),
-	aggregate_all(count, sudoKu(X, Y), C),
-	write(Y).
+%Add On List of List Pass Cordanates
+addOnListOfLists([], T, 0, J ,[R]):-
+		addOnList([], T, J, R).
 
-pTestPre(K):-
-	matriz(K, X).
-	
+addOnListOfLists([X|Y], T, 0, J, [R|Y]):-
+		addOnList(X, T, J, R).
 
-pTestPre(K, C):-
-	matriz(K, X),
-	time(prencheN(X,Y,[1, 2, 3, 4, 5, 6, 7, 8, 9])),
-	%aggregate_all(count, prencheN(X,_,[1, 2, 3, 4, 5, 6, 7, 8, 9]), C),
-	write(Y).
-	
+addOnListOfLists([], T, I, J, [[]|R]):-
+		I1 is I - 1,
+		I1 >= 0,
+		addOnListOfLists([], T, I1, J, R).
 
-matriz(1, X):- X = [
-	[1,2,3,4,5,6,7,8,9],
-	[2,3,4,5,6,7,8,9,1],
-	[3,4,5,6,7,8,9,1,2],
-	[4,5,6,7,8,9,1,2,0],
-	[5,6,7,8,9,1,2,0,0],
-	[6,7,8,9,1,2,0,0,0],
-	[7,8,9,1,2,0,0,0,0],
-	[8,9,1,2,0,0,0,0,0],
-	[9,1,2,0,0,0,0,0,0]].
+addOnListOfLists([X|Y], T, I, J, [X|R]) :-
+		I1 is I - 1,
+		I1 >= 0,
+		addOnListOfLists(Y, T, I1, J, R).
 
-matriz(2, X):- X = [
-	[1,2,0,4,0,6,7,0,9],
-	[0,3,4,0,6,0,8,9,1],
-	[3,0,5,6,0,8,9,1,0],
-	[4,0,0,7,0,0,0,2,3],
-	[5,6,0,0,0,1,0,3,0],
-	[6,7,8,0,0,0,3,0,0],
-	[7,8,0,1,0,3,0,5,6],
-	[0,0,1,0,0,0,5,0,7],
-	[9,1,2,3,0,5,0,7,0]].
+%Add on List / ModiFy
+addOnList([], P, 0, [P]).
 
-matriz(3, X):- X =[
-		[0,0,0,1,0,0,0,3,0],
-		[0,3,1,0,0,8,9,4,5],
-		[0,0,2,0,9,0,1,0,0],
-		[0,0,0,0,0,4,0,0,0],
-		[0,9,5,0,3,0,2,7,0],
-		[0,0,0,7,0,0,0,0,0],
-		[0,0,3,0,6,0,5,0,0],
-		[1,7,6,5,0,0,3,8,0],
-		[0,5,0,0,0,9,0,0,0]
-	       ].
+addOnList([_|Y], T, 0, [T|Y]).
 
-matriz(4, X):- X = [
-		[0,2,0,0,0,6,0,8,0],
-		[7,0,9,1,0,3,4,0,6],
-		[4,0,0,0,0,9,0,0,3],
-		[3,0,2,9,0,8,6,0,0],
-		[0,0,5,0,1,0,9,0,0],
-		[9,7,0,0,0,0,0,1,2],
-		[0,3,1,0,0,0,0,0,4],
-		[5,0,4,0,3,1,0,0,0],
-		[0,9,0,0,6,4,2,3,1]].
+addOnList([], P, K, [[]|J]) :-
+		T is K - 1,
+		K >= 0,
+		addOnList([], P, T, J).
 
-matriz(5, X):- X = [
-		[2,8,9,0,0,5,4,0,0],
-		[7,0,4,0,0,0,0,5,3],
-		[0,0,3,7,0,0,0,0,2],
-		[6,9,0,0,0,4,0,3,0],
-		[0,0,5,0,8,0,6,0,0],
-		[0,1,0,5,0,0,0,9,8],
-		[8,0,0,0,0,1,5,0,0],
-		[9,7,0,0,0,0,3,0,4],
-		[0,0,1,2,0,0,8,6,7]].
+addOnList([X|Y], P, K, [X|J]) :-
+		T is K - 1,
+		T >= 0,
+		addOnList(Y, P, T, J).
 
-matriz(6, X):- X = [
-		[2,0,0,0,0,5,4,0,0],
-		[7,0,4,0,0,0,0,5,3],
-		[0,0,3,7,0,0,0,0,2],
-		[6,9,0,0,0,4,0,3,0],
-		[0,0,5,0,8,0,6,0,0],
-		[0,0,0,5,0,0,0,9,8],
-		[8,0,0,0,0,1,5,0,0],
-		[9,7,0,0,0,0,3,0,4],
-		[0,0,1,2,0,0,8,6,7]].
 
-matriz(7, X):- X = [
-	[1,2,3,4,5,6,7,8,9],
-	[2,3,4,5,6,7,8,9,1],
-	[3,4,5,6,7,8,9,1,3],
-	[4,5,6,7,8,9,1,2,3],
-	[5,6,7,8,9,1,2,3,4],
-	[6,7,8,9,1,2,3,4,5],
-	[7,8,9,1,2,3,4,5,6],
-	[8,9,1,2,3,4,5,6,7],
-	[9,1,2,3,4,5,6,7,8]].
+constroiLista(0 ,L, _):- L = [].
+constroiLista(S ,L, X):-
+		A is S - 1,
+		A >= 0,
+		P is X + 1,
+		constroiLista(A ,R, P),
+		L = [X|R].
 
-matriz(8, X):- X = [
-	[1,2,3,4,5,6,7,8,9],
-	[2,3,4,5,6,7,8,9,1],
-	[3,4,5,6,7,8,9,1,3],
-	[4,5,6,7,8,9,1,2,3],
-	[5,6,7,8,9,1,2,3,4],
-	[6,7,8,9,1,2,3,4,5],
-	[7,8,9,1,2,3,4,5,6],
-	[8,9,1,2,3,4,5,6,7],
-	[9,1,2,3,4,5,6,7,8]].
+validaLinhas(X, S):-
+	transpose(X, P),
+	validaColunas(P, S).
 
-matriz(9, X):- X = [
-	[1,2,3,4,5,6,7,8,9],
-	[2,3,4,5,6,7,8,9,1],
-	[3,4,5,6,7,8,9,1,3],
-	[4,5,6,7,8,9,1,2,3],
-	[5,6,7,8,9,1,2,3,4],
-	[6,7,8,9,1,2,3,4,5],
-	[7,8,9,1,2,3,4,5,6],
-	[8,9,1,2,3,4,5,6,7],
-	[9,1,2,3,4,5,6,7,8]].
+verificaTamanho(X, S):-
+	append(X, Y),
+	length(Y, P),
+	Unround is sqrt(P),
+	S is round(Unround).
 
-matriz(10, X):- X = [
-	[1,2,3,4,5,6,7,8,9],
-	[2,3,4,5,6,7,8,9,1],
-	[3,4,5,6,7,8,9,1,3],
-	[4,5,6,7,8,9,1,2,3],
-	[5,6,7,8,9,1,2,3,4],
-	[6,7,8,9,1,2,3,4,5],
-	[7,8,9,1,2,3,4,5,6],
-	[8,9,1,2,3,4,5,6,7],
-	[9,1,2,3,4,5,6,7,8]].
+validaColunas([], _).
+validaColunas([X|Y], S) :- 
+	length(X, S),
+	validaColunas(Y, S).
+
+
+verificaColunas([]).
+verificaColunas([X|Y]) :-
+	verificaColunas(Y),
+	nPossuiRepetidos(X).
+
+verificaLinhas([]).
+verificaLinhas(X) :- 
+		transpose(X, P),
+		verificaColunas(P).
+
+verificaBlocos(S, X) :-
+	S1 is round(sqrt(S)),
+	transforma(S1, X,0,P),
+	verificaColunas(P).
+
+transforma(_, [], _, []).
+transforma(S, [X|Y], I, R):-
+	T is I + 1,
+	transforma(S, Y, T, P),
+	transforma(S, X, I, 0, P, R).
+
+transforma(_, [], _, _, P, P).
+
+transforma(S, [X|Y], I, J ,P, R):-
+	T is J + 1,
+	transforma(S, Y, I, T , P, K),
+	converte(S, I, J, I1, J1),
+	addOnListOfLists(K, X, I1, J1, R).
+
+converte(S,I, J, I1, J1) :-
+		I1 is div(I, S) + div(J, S)*S, 
+		J1 is mod(I, S) + mod(J, S)*S.
+
+
+removeL1deL2(_, [], []).
+removeL1deL2([X], N, R):- delete(N, X, R).
+removeL1deL2([X|Y], N, R):-
+	removeL1deL2(Y, N, R2),
+	delete(R2, X, R).
+
+nPossuiRepetidos([]).
+nPossuiRepetidos([X|Y]):- 
+		\+member(X, Y), 
+		nPossuiRepetidos(Y).
+
+%nPossuiRepetidos([0|Y]):-
+%		nPossuiRepetidos(Y).
