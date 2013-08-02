@@ -1,9 +1,12 @@
-:- include(sudoku).
-:- include(matrizes).
-
-
+:-include(sudokuMain).
+:-include(testBase).
 start :-
 	test(1).
+
+start(P) :- 
+	matriz(P, X),    
+	sudoKu(X, Y),
+	imprime(Y).
 
 
 test(1) :- 
@@ -24,6 +27,4 @@ test(2) :-
 	sudoKu(X, Y),
 	imprime(Y).
 
-imprime([]).
-imprime([X|XS]):-
-	write(X), nl, imprime(XS).
+
